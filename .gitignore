@@ -1,0 +1,18 @@
+# OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# General log files
+*.log
+
+# IDE/Editor specific (general, allowing shared settings)
+.idea/
+.vscode/
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Python cache (if any utility scripts are at the root)
+__pycache__/
+*.pyc
