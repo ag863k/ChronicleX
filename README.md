@@ -53,9 +53,6 @@ ChronicleX is a dynamic full-stack web application designed to provide users wit
 * **Version Control:**
     * Git & GitHub
 
-## Project Structure
-
-chroniclex/├── backend/                # Django Backend Project│   ├── api/                # Django app for core logic (models, views, serializers, urls)│   ├── chroniclex_project/ # Django project settings and main urls│   ├── manage.py│   ├── requirements.txt    # Python dependencies│   └── .env.example        # Example environment variables for backend├── frontend/               # React Frontend Project (Vite)│   ├── public/             # Static assets (e.g., favicon.ico)│   ├── src/│   │   ├── App.jsx         # Main application component with routing│   │   ├── main.jsx        # React entry point│   │   ├── assets/│   │   ├── components/     # Reusable UI components (auth, blog, layout)│   │   ├── contexts/       # React Context (e.g., AuthContext)│   │   ├── hooks/          # Custom React hooks (e.g., useAuth)│   │   ├── pages/          # Page-level components│   │   └── services/       # API call functions (authService, blogService)│   ├── .env                # Frontend environment variables (VITE_API_BASE_URL) - DO NOT COMMIT│   ├── .env.example        # Example environment variables for frontend│   ├── index.html          # Main HTML file│   ├── package.json│   └── vite.config.js├── .gitignore              # Root gitignore└── README.md               # This file
 ## Setup and Running Instructions
 
 ### Prerequisites
