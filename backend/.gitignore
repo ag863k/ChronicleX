@@ -1,0 +1,33 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment folder
+venv_chroniclex/
+.venv/
+env/
+venv/
+
+# Django specific
+db.sqlite3
+db.sqlite3-journal
+local_settings.py 
+staticfiles/     
+media/           
+
+# Environment variables file
+.env
+.env.*
+
+# Django Log files 
+*.log
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+
+# Pytest cache
+.pytest_cache/
