@@ -34,7 +34,12 @@ export const loginUser = async (credentials) => {
 
 export const logoutUser = async () => {
     try {
-        const response = await apiClient.post('/auth/logout/');
+        const token = localStorage.getItem('authToken');
+        const response = await apiClient.post('/auth/logout/', {}, {
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        });
         return response.data; // Expected: { detail: "Successfully logged out." }
     } catch (error) {
         console.error("Error during logout:", error.response ? error.response.data : error.message);

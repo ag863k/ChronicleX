@@ -18,9 +18,6 @@ blogApiClient.interceptors.request.use(
         const token = getAuthToken();
         if (token) {
             config.headers['Authorization'] = `Token ${token}`;
-            console.log('blogService: Authorization header added to request:', config.headers['Authorization']);
-        } else {
-            console.log('blogService: No token found, Authorization header not added.');
         }
         return config;
     },
@@ -35,8 +32,14 @@ export const getAllBlogs = async (page = 1) => {
         const response = await blogApiClient.get(`?page=${page}`);
         return response.data;
     } catch (error) {
-        console.error("Error fetching all blogs:", error.response ? error.response.data : error.message);
-        throw error.response ? error.response.data : new Error("Failed to fetch blog posts.");
+        console.error("Error fetching all blogs:", error);
+        if (error.response) {
+            throw error.response.data;
+        } else if (error.request) {
+            throw new Error("Network error: Unable to connect to server");
+        } else {
+            throw new Error("Failed to fetch blog posts.");
+        }
     }
 };
 

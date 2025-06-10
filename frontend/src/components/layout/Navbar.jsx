@@ -2,7 +2,7 @@ import React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Box, SvgIcon } from '@mui/material'; 
 import useAuth from '../../hooks/useAuth';
-// import { logoutUser } from '../../services/authService'; // If backend logout exists
+import { logoutUser } from '../../services/authService';
 const XLogoIcon = (props) => (
   <SvgIcon {...props} viewBox="0 0 24 24">
     <path d="M16.75 2h-3.5L9.5 9.25 5.75 2H2.25l5.5 8.25L2 22h3.5l3.75-7.25L13 22h3.5l-5.5-8.25L16.75 2zm-3.5 16.5L10 14.25l-1.25-2L5.25 4h1.5l2.5 4.25L12.5 14l1.25 2L17.25 20h-1.5l-2.5-4.25z"/>
@@ -12,12 +12,16 @@ const XLogoIcon = (props) => (
 
 const Navbar = () => {
     const { isAuthenticated, user, logout } = useAuth();
-    const navigate = useNavigate();
-
-    const handleLogout = async () => {
-        // Optional: await logoutUser();
-        logout();
-        navigate('/');
+    const navigate = useNavigate();    const handleLogout = async () => {
+        try {
+            await logoutUser();
+        } catch (error) {
+            console.error('Logout error:', error);
+            // Even if backend logout fails, clear frontend state
+        } finally {
+            logout();
+            navigate('/');
+        }
     };
 
     return (

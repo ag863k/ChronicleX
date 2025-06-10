@@ -14,12 +14,16 @@ venv/
 db.sqlite3
 db.sqlite3-journal
 local_settings.py 
-staticfiles/     
+staticfiles/
+staticfiles_prod/     
 media/           
 
 # Environment variables file
 .env
 .env.*
+.env.local
+.env.production
+!.env.example
 
 # Django Log files 
 *.log
@@ -31,3 +35,24 @@ htmlcov/
 
 # Pytest cache
 .pytest_cache/
+
+# Test files and scripts
+test_api.py
+test_setup.py
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Deployment files with sensitive data
+secrets.json
+
+# Django migrations (uncomment if you want to ignore migrations)
+# */migrations/
+# !*/migrations/__init__.py

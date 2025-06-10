@@ -100,12 +100,12 @@ ChronicleX is a dynamic full-stack web application designed to provide users wit
 
 5.  **Set Up Environment Variables:**
     * In the `chroniclex/backend/` directory, create a file named `.env`.
-    * Add the following content, replacing `'your_strong_django_secret_key_here'` with a unique, strong secret key (you can generate one online or use Django's utilities if needed for production):
+    * Copy the contents from `.env.example` and update the values:
         ```env
         SECRET_KEY='your_strong_django_secret_key_here'
         DEBUG=True
-        # For production, DEBUG should be False and ALLOWED_HOSTS set appropriately.
-        # ALLOWED_HOSTS=127.0.0.1,localhost,your_deployed_domain.com 
+        ALLOWED_HOSTS=127.0.0.1,localhost
+        CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
         ```
 
 6.  **Run Database Migrations:**
@@ -146,9 +146,9 @@ ChronicleX is a dynamic full-stack web application designed to provide users wit
 
 4.  **Set Up Environment Variables:**
     * In the `chroniclex/frontend/` directory, create a file named `.env`.
-    * Add the following line, ensuring your backend server is running on port 8000:
+    * Copy the contents from `.env.example`:
         ```env
-        VITE_API_BASE_URL=[http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)
+        VITE_API_BASE_URL=http://127.0.0.1:8000/api
         ```
 
 5.  **Run the Frontend Development Server:**
@@ -156,6 +156,23 @@ ChronicleX is a dynamic full-stack web application designed to provide users wit
     npm run dev
     ```
     The React frontend application should now be running, typically at `http://localhost:5173/` (Vite will indicate the port if 5173 is busy). Open this URL in your web browser.
+
+---
+
+## Quick Deployment Guide
+
+For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
+### Backend to Render:
+1. Push your code to GitHub
+2. Connect to Render, set root directory to `backend`
+3. Add environment variables (SECRET_KEY, DEBUG=False, ALLOWED_HOSTS, CORS_ALLOWED_ORIGINS)
+4. Deploy with build command: `./build.sh`
+
+### Frontend to Netlify:
+1. Connect to Netlify, set base directory to `frontend`
+2. Build command: `npm run build`, Publish directory: `dist`
+3. Add environment variable: `VITE_API_BASE_URL=https://your-backend.onrender.com/api`
 
 ---
 

@@ -1,10 +1,9 @@
 import os
-import environ # For django-environ
+import environ
 from pathlib import Path
 
 # Initialize django-environ
 env = environ.Env(
-    
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, []),
     CORS_ALLOWED_ORIGINS=(list, [])
@@ -12,10 +11,11 @@ env = environ.Env(
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Read .env file if it exists (for local development)
 if os.path.exists(os.path.join(BASE_DIR, '.env')):
     environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-SECRET_KEY = env('SECRET_KEY', default='your_local_development_secret_key_fallback_if_not_in_env')
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-change-this-in-production')
 
 DEBUG = env('DEBUG')
 
@@ -106,6 +106,10 @@ if not CORS_ALLOWED_ORIGINS and DEBUG: # Fallback for local development
         "http://localhost:5173",
         "http://127.0.0.1:5173",
     ]
+
+# Also allow CORS for all origins in development (more permissive)
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
 
 # Django REST Framework settings
 REST_FRAMEWORK = {

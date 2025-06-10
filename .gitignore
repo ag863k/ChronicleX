@@ -16,3 +16,34 @@ desktop.ini
 # Python cache (if any utility scripts are at the root)
 __pycache__/
 *.pyc
+
+# Environment files (contains sensitive data)
+.env
+.env.local
+.env.*.local
+
+# Test files and temporary scripts (these are for development only)
+test_api.html
+start_dev.bat
+git_push.bat
+COMMIT_MESSAGE.md
+GIT_GUIDELINES.md
+
+# Build outputs
+dist/
+build/
+
+# Node modules if any at root level
+node_modules/
+
+# Virtual environments at root level
+.venv/
+venv/
+env/
+
+# Temporary and backup files
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
