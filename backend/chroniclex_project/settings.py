@@ -72,8 +72,18 @@ WSGI_APPLICATION = 'chroniclex_project.wsgi.application'
 
 
 DATABASES = {
-    'default': env.db_url('DATABASE_URL', default=f'sqlite:///{BASE_DIR / "db.sqlite3"}')
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+# For production on Render, we'll use SQLite
+if not DEBUG:
+    # Ensure the database directory exists
+    import os
+    db_dir = os.path.dirname(str(BASE_DIR / 'db.sqlite3'))
+    os.makedirs(db_dir, exist_ok=True)
 
 
 # Password validation
