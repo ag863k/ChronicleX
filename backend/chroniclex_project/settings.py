@@ -73,21 +73,24 @@ WSGI_APPLICATION = 'chroniclex_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME', default='chroniclex'),
+        'USER': env('DB_USER', default=''),
+        'PASSWORD': env('DB_PASSWORD', default=''),
+        'HOST': env('DB_HOST', default=''),
+        'PORT': env('DB_PORT', default='5432'),
     }
 }
 
-# For production on Render, we'll use SQLite
-if not DEBUG:
-    # Ensure the database directory exists
-    import os
-    db_dir = os.path.dirname(str(BASE_DIR / 'db.sqlite3'))
-    os.makedirs(db_dir, exist_ok=True)
+# Fallback to SQLite for local development if PostgreSQL not configured
+if not all([env('DB_NAME', default=''), env('DB_USER', default=''), env('DB_HOST', default='')]):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/stable/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -96,28 +99,22 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/stable/topics/i18n/
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
-
 STATIC_URL = '/static/'
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_prod')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS')
-if not CORS_ALLOWED_ORIGINS and DEBUG: # Fallback for local development
+if not CORS_ALLOWED_ORIGINS and DEBUG:
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
     ]
 
-# Also allow CORS for all origins in development (more permissive)
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 

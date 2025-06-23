@@ -10,25 +10,26 @@ const apiClient = axios.create({
 });
 
 export const signupUser = async (userData) => {
-    // userData: { username, email, password }
     try {
         const response = await apiClient.post('/auth/signup/', userData);
-        return response.data; // Expected: { id, username, email, blogs: [] }
+        return response.data;
     } catch (error) {
-        console.error("Error during signup:", error.response ? error.response.data : error.message);
-        throw error.response ? error.response.data : new Error("Signup failed");
+        if (error.response && error.response.data) {
+            throw error.response.data;
+        }
+        throw { message: "Network error. Please try again." };
     }
 };
 
 export const loginUser = async (credentials) => {
-    // credentials: { username, password }
     try {
         const response = await apiClient.post('/auth/login/', credentials);
-        // Expected: { token, user_id, username, email }
         return response.data;
     } catch (error) {
-        console.error("Error during login:", error.response ? error.response.data : error.message);
-        throw error.response ? error.response.data : new Error("Login failed");
+        if (error.response && error.response.data) {
+            throw error.response.data;
+        }
+        throw { message: "Network error. Please try again." };
     }
 };
 
@@ -40,10 +41,12 @@ export const logoutUser = async () => {
                 'Authorization': `Token ${token}`
             }
         });
-        return response.data; // Expected: { detail: "Successfully logged out." }
+        return response.data;
     } catch (error) {
-        console.error("Error during logout:", error.response ? error.response.data : error.message);
-        throw error.response ? error.response.data : new Error("Logout failed");
+        if (error.response && error.response.data) {
+            throw error.response.data;
+        }
+        throw { message: "Logout failed. Please try again." };
     }
 };
 

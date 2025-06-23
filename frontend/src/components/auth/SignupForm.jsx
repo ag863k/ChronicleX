@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography, Alert } from "@mui/material";
 import { signupUser } from "../../services/authService";
-// import useAuth from '../../hooks/useAuth'; // Not strictly needed here unless auto-login after signup
 
 const SignupForm = ({ onSwitchMode, onSignupSuccess }) => {
   const [username, setUsername] = useState("");
@@ -10,7 +9,6 @@ const SignupForm = ({ onSwitchMode, onSignupSuccess }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  // const { login } = useAuth(); // If you want to auto-login after signup
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,24 +20,15 @@ const SignupForm = ({ onSwitchMode, onSignupSuccess }) => {
       setError("Password must be at least 8 characters long.");
       setLoading(false);
       return;
-    }
-
-    try {
-      console.log("SignupForm: Attempting signup with data:", { username, email, password }); // Log data being sent
-      const responseData = await signupUser({ username, email, password });
-      console.log("SignupForm: Signup API call successful. Response:", responseData); // Log successful response
+    }    try {
+      await signupUser({ username, email, password });
       setSuccess("Signup successful! Please login.");
-      if (onSignupSuccess) onSignupSuccess(); // Notify parent to switch to login
+      if (onSignupSuccess) onSignupSuccess();
     } catch (err) {
-      console.error("SignupForm: Signup API call failed. Full error object:", err); // Log the full error object
-      
-      let errorMessage = "Failed to sign up. Please check console for details."; // Default/fallback error
+      let errorMessage = "Failed to sign up. Please try again.";
 
-      // Attempt to parse more specific errors from the backend if available
-      // err might be the error object from Axios, where err.response.data contains backend errors
       if (err.response && err.response.data) {
         const backendErrors = err.response.data;
-        console.error("SignupForm: Backend error data:", backendErrors);
         if (backendErrors.username && Array.isArray(backendErrors.username)) {
           errorMessage = `Username: ${backendErrors.username.join(" ")}`;
         } else if (backendErrors.email && Array.isArray(backendErrors.email)) {
@@ -51,7 +40,6 @@ const SignupForm = ({ onSwitchMode, onSignupSuccess }) => {
         } else if (typeof backendErrors === 'string') {
             errorMessage = backendErrors;
         } else if (Object.keys(backendErrors).length > 0) {
-            // Generic way to show available error message from backend
             const firstErrorKey = Object.keys(backendErrors)[0];
             const firstErrorMessage = backendErrors[firstErrorKey];
             if (Array.isArray(firstErrorMessage) && firstErrorMessage.length > 0) {
@@ -60,7 +48,7 @@ const SignupForm = ({ onSwitchMode, onSignupSuccess }) => {
                 errorMessage = `${firstErrorKey}: ${firstErrorMessage}`;
             }
         }
-      } else if (err.message) { // Fallback to err.message if no response data
+      } else if (err.message) {
         errorMessage = err.message;
       }
       

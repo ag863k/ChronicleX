@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; 
 import { TextField, Button, Box, Typography, Alert } from '@mui/material';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { loginUser } from '../../services/authService';
 
 const LoginForm = ({ onSwitchMode }) => {
@@ -11,19 +11,17 @@ const LoginForm = ({ onSwitchMode }) => {
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation(); 
+    const location = useLocation();
 
-    // If 'from' state exists (passed by ProtectedRoute), use it, otherwise default to homepage
     const from = location.state?.from?.pathname || "/";
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError('');
-        setLoading(true);
-        try {
+        setLoading(true);        try {
             const data = await loginUser({ username, password });
             login({ id: data.user_id, username: data.username, email: data.email }, data.token);
-            navigate(from, { replace: true }); // Navigate to 'from' or homepage
+            navigate(from, { replace: true });
         } catch (err) {
             setError(err.detail || err.message || 'Failed to login. Please check your credentials.');
         } finally {
